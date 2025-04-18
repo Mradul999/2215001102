@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const TopUsers = () => {
-  const [topUsers, setTopUsers] = useState({});
-  console.log(topUsers);
+  const [topUsers, setTopUsers] = useState([]);
 
   useEffect(() => {
     const getTopUsers = async () => {
@@ -12,11 +11,19 @@ const TopUsers = () => {
           "http://20.244.56.144/evaluation-service/users",
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiZXhwIjoxNzQ0OTU3OTU4LCJpYXQiOjE3NDQ5NTc2NTgsImlzcyI6IkFmZm9yZG1lZCIsImp0aSI6IjE3YjEyOGU2LTRlNTMtNGI1NC1hMTM0LTc5MmJjNzkwNzkxNyIsInN1YiI6Im1yYWR1bC52ZXJtYV9jczIyQGdsYS5hYy5pbiJ9LCJlbWFpbCI6Im1yYWR1bC52ZXJtYV9jczIyQGdsYS5hYy5pbiIsIm5hbWUiOiJtcmFkdWwgdmVybWEiLCJyb2xsTm8iOiIyMjE1MDAxMTAyIiwiYWNjZXNzQ29kZSI6IkNObmVHVCIsImNsaWVudElEIjoiMTdiMTI4ZTYtNGU1My00YjU0LWExMzQtNzkyYmM3OTA3OTE3IiwiY2xpZW50U2VjcmV0IjoicG1zZkFzS2FzY1dwV3ViWiJ9.ayOnsfJoiR_ogZ1tBXa6xb1r6MDD81b0aJMDnM5iNxY`,
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiZXhwIjoxNzQ0OTU4MzI2LCJpYXQiOjE3NDQ5NTgwMjYsImlzcyI6IkFmZm9yZG1lZCIsImp0aSI6IjE3YjEyOGU2LTRlNTMtNGI1NC1hMTM0LTc5MmJjNzkwNzkxNyIsInN1YiI6Im1yYWR1bC52ZXJtYV9jczIyQGdsYS5hYy5pbiJ9LCJlbWFpbCI6Im1yYWR1bC52ZXJtYV9jczIyQGdsYS5hYy5pbiIsIm5hbWUiOiJtcmFkdWwgdmVybWEiLCJyb2xsTm8iOiIyMjE1MDAxMTAyIiwiYWNjZXNzQ29kZSI6IkNObmVHVCIsImNsaWVudElEIjoiMTdiMTI4ZTYtNGU1My00YjU0LWExMzQtNzkyYmM3OTA3OTE3IiwiY2xpZW50U2VjcmV0IjoicG1zZkFzS2FzY1dwV3ViWiJ9.B24fMNDbJHUzmqE6u2Eau5Bog--ASQot6ZekDZ2xi8o`,
             },
           }
         );
-        setTopUsers(response.data.users);
+
+        const usersObj = response.data.users;
+
+        const usersArray = Object.entries(usersObj).map(([id, name]) => ({
+          id,
+          name,
+        }));
+
+        setTopUsers(usersArray);
       } catch (error) {
         console.error("Error fetching top users:", error);
       }
@@ -31,7 +38,7 @@ const TopUsers = () => {
       <div className="space-y-4">
         {topUsers.map((user, index) => (
           <div
-            key={user.id || index}
+            key={user.id}
             className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center"
           >
             <div>
